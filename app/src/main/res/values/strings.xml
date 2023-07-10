@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AchiLiveApp</string>
+    <string name="email">Почта</string>
+    <string name="password">Пароль</string>
+    <string name="repeatPass">Повторите пароль</string>
+    <string name="userNotFoundException">Пользователь не найден</string>
+    <string name="emptyField">Поле не может быть пустым</string>
+</resources>

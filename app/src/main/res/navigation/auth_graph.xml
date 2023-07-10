@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_graph"
+    app:startDestination="@id/signingFragment">
+
+    <fragment
+        android:id="@+id/signingFragment"
+        android:name="com.example.achiliveapp.auth.ui.signin.SigningFragment"
+        android:label="fragment_signin"
+        tools:layout="@layout/fragment_signin" >
+        <action
+            android:id="@+id/action_signingFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
+        <argument
+            android:name="bottomNavShow"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.example.achiliveapp.auth.ui.reg.RegistrationFragment"
+        android:label="fragment_registration"
+        tools:layout="@layout/fragment_registration" >
+        <action
+            android:id="@+id/action_registrationFragment_to_signingFragment"
+            app:destination="@id/signingFragment"
+            app:popUpTo="@id/signingFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="bottomNavShow"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
+</navigation>

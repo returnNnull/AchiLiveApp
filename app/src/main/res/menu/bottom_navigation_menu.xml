@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/accountFragment"
+        android:title="Аккаунт"
+        android:enabled="true"
+        android:icon="@drawable/account_circle_48px" />
+
+    <item
+        android:id="@+id/achievementListFragment"
+        android:title="Достижения"
+        android:enabled="true"
+        android:icon="@drawable/stars_48px" />
+
+    <item
+        android:id="@+id/settingFragment"
+        android:title="Настройки"
+        android:enabled="true"
+        android:icon="@drawable/settings_48px" />
+</menu>
