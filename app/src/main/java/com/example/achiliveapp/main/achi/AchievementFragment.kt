@@ -35,25 +35,28 @@ class AchievementFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentAchievementBinding.inflate(layoutInflater, container, false)
-        binding?.let {
-            viewPager = it.viewPager2
-            tabLayout = it.tabLayout
-        }
+//        binding?.let {
+//            viewPager = it.viewPager2
+//            tabLayout = it.tabLayout
+//        }
         return binding?.root
+    }
+
+    override fun onStart() {
+        viewModel.update()
+        super.onStart()
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[AchievementViewModel::class.java]
-
-
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.itemState.collect { state ->
 
                     if(state.isSuccess()){
-                        attachTabsToViewPager(state.data)
+                       // attachTabsToViewPager(state.data)
                     }
 
                     if(state.isError()){

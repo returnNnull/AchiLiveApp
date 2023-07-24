@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_settingFragment_to_addCategoryFragment"
             app:destination="@id/addCategoryFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_createAwardFragment"
+            app:destination="@id/createAwardFragment" />
     </fragment>
     <fragment
         android:id="@+id/addCategoryFragment"
@@ -34,5 +37,24 @@
             app:destination="@id/settingFragment"
             app:popUpTo="@id/settingFragment"
             app:popUpToInclusive="false" />
+        <argument
+            android:name="bottomNavShow"
+            app:argType="boolean"
+            android:defaultValue="false"/>
+    </fragment>
+    <fragment
+        android:id="@+id/createAwardFragment"
+        android:name="com.example.achiliveapp.main.admin.CreateAwardFragment"
+        android:label="fragment_create_award"
+        tools:layout="@layout/fragment_create_award" >
+        <action
+            android:id="@+id/action_createAwardFragment_to_settingFragment"
+            app:destination="@id/settingFragment"
+            app:popUpTo="@id/settingFragment"
+            app:popUpToInclusive="false" />
+        <argument
+            android:name="bottomNavShow"
+            app:argType="boolean"
+            android:defaultValue="false"/>
     </fragment>
 </navigation>

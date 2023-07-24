@@ -7,17 +7,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.achiliveapp.R
 import com.example.achiliveapp.databinding.AchiListItemBinding
 import com.example.achiliveapp.firebase.AwardSchemeDTO
+import com.example.achiliveapp.main.achi.data.AwardScheme
 
-class AwardSchemeDTOListAdapter : RecyclerView.Adapter<AwardSchemeDTOListAdapter.ViewHolder>() {
+class AwardSchemeListAdapter : RecyclerView.Adapter<AwardSchemeListAdapter.ViewHolder>() {
 
-    var items: List<AwardSchemeDTO> = mutableListOf()
+    var items: List<AwardScheme> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
-    private var itemClick: (AwardSchemeDTO) -> Unit = {}
-    fun itemClick(listener: (AwardSchemeDTO) -> Unit) {
+    private var itemClick: (AwardScheme) -> Unit = {}
+    fun itemClick(listener: (AwardScheme) -> Unit) {
         itemClick = listener
     }
 
@@ -27,7 +28,7 @@ class AwardSchemeDTOListAdapter : RecyclerView.Adapter<AwardSchemeDTOListAdapter
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.achi = items[position]
+        holder.binding.award = items[position]
         holder.itemView.setOnClickListener {
             itemClick(items[position])
         }

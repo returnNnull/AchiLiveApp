@@ -15,18 +15,19 @@ data class ProfileDTO(
 ) : DTO()
 
 data class AwardSchemeDTO(
-    val name: String,
-    val about: String,
-    val img: String,
-    val maxValue: Int,
-    val categoriesId: String,
+    val name: String = "",
+    val about: String = "",
+    var img: String = "",
+    val maxValue: Int = 0,
+    var categoriesId: String = "",
+    val type: Int = 0
 ) : DTO()
 
 
 data class CategoriesSchemeDTO(
     val name: String = "",
     val about: String = "",
-    val img: String = "",
+    var img: String = "",
 ) : DTO()
 
 

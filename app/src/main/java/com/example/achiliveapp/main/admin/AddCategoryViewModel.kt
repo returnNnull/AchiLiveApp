@@ -2,6 +2,7 @@ package com.example.achiliveapp.main.admin
 
 import android.net.Uri
 import androidx.core.net.toFile
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.achiliveapp.firebase.CategoriesSchemeDTO
@@ -18,41 +19,73 @@ class AddCategoryViewModel : ViewModel() {
     private val categoryDataSource = CategoryDataSource()
 
 
-    private val _uiStates = MutableStateFlow<UiStates>(UiStates.Ready())
+    private val _uiStates = MutableStateFlow<ScreenUiState>(ScreenUiState.Started())
     val uiStates = _uiStates.asStateFlow()
 
-    private lateinit var uri: Uri
+    val categoryUiState = CategoryUiState()
 
 
-    fun create(name: String, about: String){
+    fun save() {
         viewModelScope.launch {
             try {
-                _uiStates.value = UiStates.ImageUploading()
-                val imgUploadResult = imageCloud.save(uri, FirebaseImageCloud.Folder.CATEGORIES)
-                val imgUri = imgUploadResult.getOrThrow()
-                _uiStates.value = UiStates.CategoryUploading()
-                categoryDataSource.insert(CategoriesSchemeDTO(name, about, imgUri.toString())).getOrThrow()
-                _uiStates.value = UiStates.Success()
-            }
-            catch (e: Exception){
-                _uiStates.value = UiStates.Error(e)
+                _uiStates.value = ScreenUiState.Loading()
+                val uri = categoryUiState.uri.value!!
+                val imgUploadUri = imageCloud.save(uri, FirebaseImageCloud.Folder.CATEGORIES).getOrThrow()
+                val categoriesSchemeDTO = categoryUiState.toDTO()
+                categoriesSchemeDTO.img = imgUploadUri.toString()
+                categoryDataSource.insert(categoriesSchemeDTO).getOrThrow()
+                _uiStates.value = ScreenUiState.Success()
+            } catch (e: Exception) {
+                _uiStates.value = ScreenUiState.Error(e)
             }
         }
     }
 
-    fun setImageUri(uri: Uri){
-        this.uri = uri
+    fun initById(id: String?) {
+        if (id != null) {
+            viewModelScope.launch {
+                try {
+                    _uiStates.value = ScreenUiState.Loading()
+                    val category = categoryDataSource.getById(id).getOrThrow()
+                    categoryUiState.update(
+                        category.id,
+                        category.name,
+                        category.about,
+                        Uri.parse(category.img)
+                    )
+                    _uiStates.value = ScreenUiState.Success()
+                } catch (e: Exception) {
+                    _uiStates.value = ScreenUiState.Error(e)
+                }
+            }
+
+        }
+
     }
 
 
-    open class UiStates(){
+    private fun CategoryUiState.toDTO(): CategoriesSchemeDTO {
+        val categoriesSchemeDTO = CategoriesSchemeDTO(name.value!!, about.value!!, uri.value.toString())
+        categoriesSchemeDTO.id = id.value!!
+        return categoriesSchemeDTO
+    }
 
-        class Ready(): UiStates()
-        class ImageUploading(val message: String = "Отправка изображения..."): UiStates()
-        class CategoryUploading(val message: String = "Отправка категории..."): UiStates()
-        class Error(val e: Exception) : UiStates()
-        class Success() : UiStates()
+    fun setImageUri(uri: Uri) {
+        categoryUiState.uri.value = uri
     }
 
 
+    data class CategoryUiState(
+        val id: MutableLiveData<String> = MutableLiveData(""),
+        val name: MutableLiveData<String> = MutableLiveData(""),
+        val about: MutableLiveData<String> = MutableLiveData(""),
+        val uri: MutableLiveData<Uri> = MutableLiveData(Uri.EMPTY)
+    ) {
+        fun update(id: String, name: String, about: String, uri: Uri) {
+            this.id.value = id
+            this.name.value = name
+            this.about.value = about
+            this.uri.value = uri
+        }
+    }
 }

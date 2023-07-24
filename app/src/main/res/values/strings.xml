@@ -5,4 +5,18 @@
     <string name="repeatPass">Повторите пароль</string>
     <string name="userNotFoundException">Пользователь не найден</string>
     <string name="emptyField">Поле не может быть пустым</string>
+    <string name="show">Показать</string>
+    <string name="save">Сохранить</string>
+    <string name="done">Выполнено</string>
+    <string name="edit">Редактировать</string>
+    <string name="icon">icon</string>
+    <string name="select">Выбрать</string>
+    <string name="delete">Удалить</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam porta.</string>
+    <string name="header">Заголовок</string>
+
+    <string-array name="award_type">
+        <item>Целочисленный</item>
+        <item>Логичекий</item>
+    </string-array>
 </resources>

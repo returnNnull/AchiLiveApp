@@ -1,93 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout5"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".main.admin.AddCategoryFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.achiliveapp.main.admin.AddCategoryViewModel" />
+    </data>
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/frameLayout5"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@drawable/vertical_divider"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:showDividers="middle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        tools:context=".main.admin.AddCategoryFragment">
 
-        <ImageView
-            android:id="@+id/selectImg"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="#E3E3E3"
-            android:scaleType="center"
-            android:src="@drawable/add_photo_alternate_48px" />
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/categoryName"
-            style="?attr/textInputOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Название">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/categoryAbout"
-            style="?attr/textInputOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Описание">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:gravity="top"
-                android:inputType="textMultiLine" />
-        </com.google.android.material.textfield.TextInputLayout>
-
+            android:layout_height="?actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/admin_panel_app_bar_menu"
+            app:navigationIcon="@drawable/baseline_arrow_back_ios_24"
+            app:subtitle="Создать"
+            app:subtitleCentered="true"
+            app:subtitleTextColor="@color/gray"
+            app:title="Категория"
+            app:titleCentered="true" />
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
+            android:layout_height="0dp"
+            android:divider="@drawable/vertical_divider"
+            android:orientation="vertical"
+            android:showDividers="middle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBar">
 
-            <Button
-                android:id="@+id/cancelBtn"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Отменить" />
+            <ImageView
+                android:id="@+id/selectImg"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="#E3E3E3"
+                android:contentDescription="Photo"
+                android:scaleType="center"
+                android:src="@drawable/add_photo_alternate_48px"
+                app:error="@{@drawable/baseline_broken_image_24}"
+                app:imgUri="@{viewModel.categoryUiState.uri}"
+                app:placeholder="@{@drawable/bg_placeholder}" />
 
-            <Button
-                android:id="@+id/categoryCreateBtn"
-                android:layout_width="wrap_content"
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/categoryName"
+                style="?attr/textInputOutlinedStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Создать" />
+                android:hint="Название">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={viewModel.categoryUiState.name}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/categoryAbout"
+                style="?attr/textInputOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Описание">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:gravity="top"
+                    android:inputType="textMultiLine"
+                    android:text="@={viewModel.categoryUiState.about}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
         </LinearLayout>
 
-
-    </LinearLayout>
-
-    <ViewStub
-        android:id="@+id/loading_stub_import"
-        android:inflatedId="@+id/panel_import"
-        android:layout="@layout/loading_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        <ViewStub
+            android:id="@+id/loading_stub_import"
+            android:inflatedId="@+id/panel_import"
+            android:layout="@layout/loading_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

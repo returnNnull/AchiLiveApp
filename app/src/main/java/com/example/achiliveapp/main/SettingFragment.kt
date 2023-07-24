@@ -25,8 +25,6 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSettingBinding.inflate(layoutInflater, container, false)
-
-
         return binding?.root
     }
 
@@ -37,14 +35,18 @@ class SettingFragment : Fragment() {
 
         binding?.let {
             it.logout.setOnClickListener(signOutClickListener)
-
             it.addCategory.setOnClickListener(addCategoryBtnClickListener)
+            it.addAchi.setOnClickListener(addAwardClickListener)
         }
     }
 
 
     private val signOutClickListener :(View) -> Unit = {
         viewModel.signOut()
+    }
+
+    private val addAwardClickListener :(View) -> Unit = {
+        Navigation.findNavController(it).navigate(R.id.action_settingFragment_to_createAwardFragment)
     }
 
     private val addCategoryBtnClickListener: (View) -> Unit =  {

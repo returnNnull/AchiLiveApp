@@ -2,6 +2,7 @@ package com.example.achiliveapp.main.admin
 
 import android.net.Uri
 import android.os.Bundle
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.Toolbar
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +21,7 @@ import androidx.navigation.Navigation
 import com.example.achiliveapp.R
 import com.example.achiliveapp.auth.utils.getTextWithTrim
 import com.example.achiliveapp.databinding.FragmentAddCategoryBinding
+import com.example.achiliveapp.share.EditTextChangeListener
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -29,6 +33,10 @@ class AddCategoryFragment : Fragment() {
 
     private lateinit var viewModel: AddCategoryViewModel
     private var binding: FragmentAddCategoryBinding? = null
+
+    companion object{
+        const val ID = "ID"
+    }
 
 
     override fun onCreateView(
@@ -42,92 +50,87 @@ class AddCategoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this)[AddCategoryViewModel::class.java]
+        collectScreenStates(view)
+        collectCategory()
 
+        arguments?.let {
+            val id = it.getString(ID, null)
+            viewModel.initById(id)
+        }
+
+        binding?.let {
+            it.lifecycleOwner = this
+            it.viewModel = viewModel
+            it.selectImg.setOnClickListener(selectImageBtnClickListener)
+            it.appBar.setOnMenuItemClickListener(toolBarItemClickListener)
+        }
+    }
+
+    private val toolBarItemClickListener: Toolbar.OnMenuItemClickListener = Toolbar.OnMenuItemClickListener {
+        when(it.itemId){
+            R.id.save -> {
+                saveAward()
+                true
+            }
+            else -> false
+        }
+    }
+
+    private fun saveAward() {
+        viewModel.save()
+    }
+
+    private fun collectCategory() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+            }
+        }
+    }
+
+    private fun collectScreenStates(view: View) {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiStates.collect {
 
                     when (it) {
-                        is AddCategoryViewModel.UiStates.Success -> {
+                        is ScreenUiState.Success -> {
                             Navigation.findNavController(view)
                                 .navigate(R.id.action_addCategoryFragment_to_settingFragment)
                         }
-                        is AddCategoryViewModel.UiStates.Error -> {
-                            showSnackBar(it.e.message!!)
-                        }
-                        is AddCategoryViewModel.UiStates.ImageUploading -> {
-
-                        }
-                        is AddCategoryViewModel.UiStates.CategoryUploading -> {
-
+                        is ScreenUiState.Error -> {
+                            showSnackBar(it.message.message!!)
                         }
 
-                        is AddCategoryViewModel.UiStates.Ready -> {
+                        is ScreenUiState.Ready<*> -> {
 
                         }
                     }
                 }
             }
         }
-
-        binding?.let {
-            it.selectImg.setOnClickListener(selectImageBtnClickListener)
-            it.categoryCreateBtn.setOnClickListener(createBtnClickListener)
-        }
-    }
-
-    private fun showLoading(text: String) {
-        binding?.let {
-            val stub = it.loadingStubImport.inflate()
-            val textView = stub.findViewById<TextView>(R.id.progressText)
-            textView.text = text
-        }
     }
 
 
-    private fun closeLoading() {
-        binding?.let {
-            it.loadingStubImport.visibility = View.INVISIBLE
+    private val pickMedia =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) {
+                viewModel.setImageUri(uri)
+            } else {
+                showSnackBar("Изображение не выбрано")
+            }
         }
-    }
+
 
     private val createBtnClickListener: (View) -> Unit = {
-        binding?.let {
-            val name = it.categoryName.getTextWithTrim()
-            val about = it.categoryAbout.getTextWithTrim()
-            viewModel.create(name, about)
-        }
-
+        viewModel.save()
     }
 
-    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) {result ->
-        if (result != null) {
-            viewModel.setImageUri(result)
-        } else {
-
-        }
-    }
 
     private val selectImageBtnClickListener: (View) -> Unit = {
-       pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
-
-    private fun setImg(uri: Uri) {
-        binding?.let {
-            Picasso.get().load(uri).into(it.selectImg, object : Callback {
-                override fun onSuccess() {
-                    it.selectImg.scaleType = ImageView.ScaleType.CENTER_CROP
-                }
-
-                override fun onError(e: Exception?) {
-                    showSnackBar("Изображение не загружено")
-                }
-
-            })
-        }
-
-    }
 
     private fun showSnackBar(text: String) {
         binding?.let {

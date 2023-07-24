@@ -17,6 +17,11 @@
             android:name="bottomNavShow"
             app:argType="boolean"
             android:defaultValue="false" />
+
+        <argument
+            android:name="toolBarShow"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
@@ -30,6 +35,10 @@
             app:popUpToInclusive="true" />
         <argument
             android:name="bottomNavShow"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="toolBarShow"
             app:argType="boolean"
             android:defaultValue="false" />
     </fragment>

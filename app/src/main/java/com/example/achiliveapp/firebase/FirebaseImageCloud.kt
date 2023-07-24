@@ -13,11 +13,16 @@ class FirebaseImageCloud {
     private val server = Firebase.storage
     suspend fun save(uri: Uri, folder: Folder): Result<Uri> = withContext(Dispatchers.IO) {
         try {
-            val ref = server.reference
-            val riversRef = ref.child("${folder.name.lowercase()}/${uri.lastPathSegment}")
-            riversRef.putFile(uri).await()
-            val downloadUri = riversRef.downloadUrl.await()
-            Result.success(downloadUri)
+            if (uri != Uri.EMPTY){
+                val ref = server.reference
+                val riversRef = ref.child("${folder.name.lowercase()}/${uri.lastPathSegment}")
+                riversRef.putFile(uri).await()
+                val downloadUri = riversRef.downloadUrl.await()
+                Result.success(downloadUri)
+            }
+            else{
+             Result.success(uri)
+            }
         } catch (e: Exception) {
             Result.failure(e)
         }

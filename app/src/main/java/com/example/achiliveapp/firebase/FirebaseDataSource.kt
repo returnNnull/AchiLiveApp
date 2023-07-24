@@ -1,6 +1,7 @@
 package com.example.achiliveapp.firebase
 
 
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -34,26 +35,20 @@ abstract class FirebaseDataSource<T : DTO>(private val collectionName: String) {
 
     suspend fun insert(t: T) = withContext(ioDispatcher) {
         try {
-            val doc = db.collection(collectionName).document()
-            t.id = doc.id
+            val doc: DocumentReference
+            if (t.id.isEmpty()){
+                doc = db.collection(collectionName).document()
+                t.id = doc.id
+            }
+            else{
+                doc = db.collection(collectionName).document(t.id)
+            }
             doc.set(t).await()
             Result.success(t)
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
-
-    suspend fun insert(t: T, id: String) = withContext(ioDispatcher){
-        try {
-            val doc = db.collection(collectionName).document(id)
-            t.id = doc.id
-            doc.set(t).await()
-            Result.success(t)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
 
     suspend fun delete(t: T) = withContext(ioDispatcher) {
         try {

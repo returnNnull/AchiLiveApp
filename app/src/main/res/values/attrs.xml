@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="info_card" >
+        <attr name="_icon" format="reference"/>
+        <attr name="_tittle" format="string"/>
+        <attr name="_text" format="string"/>
+        <attr name="_divider" format="dimension"/>
+    </declare-styleable>
+
+</resources>

@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 app:startIconDrawable="@drawable/baseline_email_24"
                 android:layout_height="wrap_content"
-                app:editTextState="@{viewModel.emailUiState}"
+                app:state="@{viewModel.emailUiState}"
                 android:hint="@string/email">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -57,7 +57,7 @@
                 app:startIconDrawable="@drawable/baseline_lock_24"
                 android:layout_height="wrap_content"
                 app:endIconMode="password_toggle"
-                app:editTextState="@{viewModel.passUiState}"
+                app:state="@{viewModel.passUiState}"
                 android:hint="@string/password">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -72,7 +72,7 @@
                 style="?attr/textInputOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:editTextState="@{viewModel.repeatPassUiState}"
+                app:state="@{viewModel.repeatPassUiState}"
                 app:endIconMode="password_toggle"
                 app:startIconDrawable="@drawable/baseline_lock_24"
                 android:hint="@string/repeatPass">

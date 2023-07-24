@@ -11,14 +11,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class AchievementViewModel : ViewModel() {
-
-    private val _itemsState: MutableStateFlow<ListUiState<CategoriesSchemeDTO>> =
-        MutableStateFlow(ListUiState.Loading())
-    val itemState = _itemsState.asStateFlow()
-
-    private val categoriesFirebaseDataSource = CategoryDataSource()
-
-    init {
+    fun update() {
         viewModelScope.launch {
             try {
                 val result = categoriesFirebaseDataSource.getAll().getOrThrow()
@@ -28,6 +21,13 @@ class AchievementViewModel : ViewModel() {
             }
         }
     }
+
+    private val _itemsState: MutableStateFlow<ListUiState<CategoriesSchemeDTO>> =
+        MutableStateFlow(ListUiState.Loading())
+    val itemState = _itemsState.asStateFlow()
+
+    private val categoriesFirebaseDataSource = CategoryDataSource()
+
 
 
 }

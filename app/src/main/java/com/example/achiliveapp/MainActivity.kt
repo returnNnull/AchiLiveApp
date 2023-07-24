@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-
         mainViewModel = ViewModelProvider(this, MainViewModel())[MainViewModel::class.java]
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -36,7 +35,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-
                 mainViewModel.authState.collect{
                     if (it is AuthUiState.Logged){
                         showMainView(navController)

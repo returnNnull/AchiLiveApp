@@ -1,84 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout7"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".main.admin.CreateAwardFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <data>
+        <import type="com.example.achiliveapp.share.Converter"/>
+        <variable
+            name="viewModel"
+            type="com.example.achiliveapp.main.admin.CreateAwardViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/frameLayout7"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@drawable/vertical_divider"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:showDividers="middle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        tools:context=".main.admin.CreateAwardFragment">
 
-        <ImageView
-            android:id="@+id/selectImg"
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="#E3E3E3"
-            android:scaleType="center"
-            android:src="@drawable/add_photo_alternate_48px" />
+            android:layout_height="?actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/admin_panel_app_bar_menu"
+            app:navigationIcon="@drawable/baseline_arrow_back_ios_24"
+            app:subtitle="Создать"
+            app:subtitleCentered="true"
+            app:subtitleTextColor="@color/gray"
+            app:title="Достижение"
+            app:titleCentered="true" />
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/categoryName"
-            style="?attr/textInputOutlinedStyle"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Название">
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBar">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/categoryAbout"
-            style="?attr/textInputOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Описание">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:gravity="top"
-                android:inputType="textMultiLine" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-
-            <Button
-                android:id="@+id/cancelBtn"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Отменить" />
-
-            <Button
-                android:id="@+id/categoryCreateBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Создать" />
-        </LinearLayout>
+                android:divider="@drawable/vertical_divider"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:showDividers="middle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
 
-    </LinearLayout>
+                <ImageView
+                    android:id="@+id/selectImg"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="#E3E3E3"
+                    android:scaleType="center"
+                    android:src="@drawable/add_photo_alternate_48px"
+                    app:error="@{@drawable/baseline_broken_image_24}"
+                    app:imgUri="@{viewModel.awardUiState.img}"
+                    app:placeholder="@{@drawable/bg_placeholder}" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/awardName"
+                    style="?attr/textInputOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Название">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@={viewModel.awardUiState.name}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/awardAbout"
+                    style="?attr/textInputOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Описание">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
+                        android:text="@={viewModel.awardUiState.about}"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Spinner
+                    android:id="@+id/spinnerCategory"
+                    android:layout_width="match_parent"
+                    android:selectedItemPosition="@={viewModel.spinnerCategoryUiState.selectedPosition}"
+                    app:list="@{viewModel.spinnerCategoryUiState.list}"
+                    android:layout_height="48dp" />
+
+                <Spinner
+                    android:id="@+id/award_type_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:selectedItemPosition="@={viewModel.awardUiState.type}"
+                    android:entries="@array/award_type"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/maxValue"
+                    style="?attr/textInputOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Максимальное значение">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@={Converter.intToString(viewModel.awardUiState.maxValue)}"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

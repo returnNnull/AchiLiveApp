@@ -12,8 +12,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.example.achiliveapp.databinding.FragmentAchievementObjectBinding
 import com.example.achiliveapp.firebase.AwardSchemeDTO
-import com.example.achiliveapp.main.achi.adapters.AwardSchemeDTOListAdapter
-import com.example.achiliveapp.main.states.ListUiState
+import com.example.achiliveapp.main.achi.adapters.AwardSchemeListAdapter
+import com.example.achiliveapp.main.achi.data.AwardScheme
 import kotlinx.coroutines.launch
 
 class AchievementObjectFragment : Fragment() {
@@ -66,12 +66,15 @@ class AchievementObjectFragment : Fragment() {
                 }
             }
         }
-
-
     }
 
-    private fun initRecyclerView(items: List<AwardSchemeDTO>) {
-        recyclerView.adapter = AwardSchemeDTOListAdapter().apply {
+    override fun onStart() {
+        viewModel.update()
+        super.onStart()
+    }
+
+    private fun initRecyclerView(items: List<AwardScheme>) {
+        recyclerView.adapter = AwardSchemeListAdapter().apply {
             this.items = items
         }
     }
