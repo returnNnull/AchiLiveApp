@@ -16,4 +16,6 @@
     <color name="black_bg">#1e1e1e</color>
     <color name="gray">#cacaca</color>
     <color name="green_light">#b3cfc4</color>
+
+    <color name="transparent">#00000000</color>
 </resources>

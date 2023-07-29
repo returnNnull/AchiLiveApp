@@ -1,88 +1,79 @@
 package com.example.achiliveapp.main.achi
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.viewpager2.widget.ViewPager2
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
+import com.example.achiliveapp.R
 import com.example.achiliveapp.databinding.FragmentAchievementBinding
-import com.example.achiliveapp.firebase.CategoriesSchemeDTO
-import com.example.achiliveapp.main.achi.adapters.AchiViewPagerAdapter
-import com.example.achiliveapp.main.states.ListUiState
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.launch
+import com.example.achiliveapp.main.achi.adapters.AwardsGridAdapterDelegate
+import com.example.achiliveapp.main.achi.adapters.CategoryListAdapterDelegate
+import com.example.achiliveapp.main.achi.adapters.DefaultRecyclerViewAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AchievementFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = AchievementFragment()
-    }
-
-    private lateinit var viewModel: AchievementViewModel
+    private val viewModel by viewModels<AchievementViewModel>()
     private var binding: FragmentAchievementBinding? = null
-
-    private lateinit var viewPager: ViewPager2
-    private lateinit var tabLayout: TabLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentAchievementBinding.inflate(layoutInflater, container, false)
-//        binding?.let {
-//            viewPager = it.viewPager2
-//            tabLayout = it.tabLayout
-//        }
         return binding?.root
     }
 
-    override fun onStart() {
-        viewModel.update()
-        super.onStart()
-    }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[AchievementViewModel::class.java]
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.itemState.collect { state ->
 
-                    if(state.isSuccess()){
-                       // attachTabsToViewPager(state.data)
-                    }
-
-                    if(state.isError()){
-
-                    }
-
-                }
-            }
+        binding?.let {
+            it.lifecycleOwner = this
+            it.viewModel = viewModel
+            initCategoriesList(it)
+            initAwardsList(it)
         }
-
 
     }
 
-    private fun attachTabsToViewPager(list: List<CategoriesSchemeDTO>?) {
-        list?.let {
-            val items = it.toAdapterItems()
-            viewPager.adapter = AchiViewPagerAdapter(this, items)
-            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-                tab.text = items[position].name
-            }.attach()
+    private fun initCategoriesList(binding: FragmentAchievementBinding) {
+        val categoriesAdapter = DefaultRecyclerViewAdapter(CategoryListAdapterDelegate())
+        categoriesAdapter.itemClick { category ->
+            navigateToCategoryFragment(binding.categoryRecyclerView, category.id)
         }
+        binding.categoryRecyclerView.adapter = categoriesAdapter
     }
 
-    private fun List<CategoriesSchemeDTO>.toAdapterItems(): List<AchiViewPagerAdapter.Item> {
-        return this.map {
-            AchiViewPagerAdapter.Item(it.id, it.name)
+    private fun initAwardsList(binding: FragmentAchievementBinding) {
+        val awardsAdapter = DefaultRecyclerViewAdapter(AwardsGridAdapterDelegate())
+        awardsAdapter.itemClick { award ->
+            navigateToAwardDetails(binding.awardsRecyclerView, award.id)
+        }
+        binding.awardsRecyclerView.adapter = awardsAdapter
+    }
+
+
+    private fun navigateToCategoryFragment(view: View, id: String) {
+        Navigation.findNavController(view).navigate(
+            R.id.action_achievementListFragment_to_categoryFragment,
+            createBundleWithId(R.string.categoryId, id)
+        )
+    }
+
+    private fun navigateToAwardDetails(view: View, id: String) {
+        Navigation.findNavController(view).navigate(
+            R.id.action_achievementListFragment_to_awardDetailsFragment,
+            createBundleWithId(R.string.awardsId, id)
+        )
+    }
+
+    private fun createBundleWithId(resourceId: Int, value: String): Bundle {
+        return Bundle().apply {
+            this.putString(resources.getString(resourceId), value)
         }
     }
 

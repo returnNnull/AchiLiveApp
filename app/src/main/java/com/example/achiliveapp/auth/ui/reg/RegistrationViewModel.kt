@@ -9,8 +9,8 @@ import com.example.achiliveapp.auth.ui.AuthUiState
 import com.example.achiliveapp.share.EditableTextViewState
 import com.example.achiliveapp.auth.utils.PasswordEditTextException
 import com.example.achiliveapp.auth.utils.TextValidatorBuilder
-import com.example.achiliveapp.firebase.ProfileDTO
-import com.example.achiliveapp.firebase.ProfileDataSource
+import com.example.achiliveapp.data.models.dto.ProfileDTO
+import com.example.achiliveapp.data.api.firebase.ProfileDataSource
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow

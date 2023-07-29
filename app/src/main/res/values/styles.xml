@@ -11,5 +11,13 @@
         <item name="cornerSize">25dp</item>
     </style>
 
+    <style name="rounded_bottom_image">
+        <item name="cornerFamily">rounded</item>
+
+        <item name="cornerSizeBottomLeft">25dp</item>
+        <item name="cornerSizeBottomRight">25dp</item>
+    </style>
+
+
 
 </resources>

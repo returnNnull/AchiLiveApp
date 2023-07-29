@@ -14,6 +14,18 @@
     <string name="delete">Удалить</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam porta.</string>
     <string name="header">Заголовок</string>
+    <string name="star">star</string>
+    <string name="categoryImage">categoryImage</string>
+    <string name="more">Еще</string>
+    <string name="categories">Категории</string>
+    <string name="search">Поиск</string>
+    <string name="awards">Достижения</string>
+    <string name="list">Список</string>
+    <string name="all">Все</string>
+    <string name="categoryId">CATEGORY_ID</string>
+    <string name="awardsId">AWARDS_ID</string>
+    <string name="category">Категория</string>
+    <string name="categoryAboutText">This demonstration text for category about</string>
 
     <string-array name="award_type">
         <item>Целочисленный</item>

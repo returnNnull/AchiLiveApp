@@ -101,6 +101,7 @@
                     android:layout_width="match_parent"
                     android:selectedItemPosition="@={viewModel.spinnerCategoryUiState.selectedPosition}"
                     app:list="@{viewModel.spinnerCategoryUiState.list}"
+                    android:contentDescription="@string/list"
                     android:layout_height="48dp" />
 
                 <Spinner

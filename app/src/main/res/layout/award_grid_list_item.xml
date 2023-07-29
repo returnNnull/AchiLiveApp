@@ -1,33 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:layout_margin="8dp"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="award"
+            type="com.example.achiliveapp.domain.models.AwardsSchemeForPreview" />
+    </data>
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imageView"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:padding="3dp"
-        android:scaleType="centerCrop"
-        app:shapeAppearanceOverlay="@style/circle_image"
-        app:strokeColor="@color/white"
-        app:strokeWidth="2dp"
-        tools:src="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/textView12"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:maxEms="5"
-        android:maxLines="3"
-        android:maxLength="30"
-        tools:text="@tools:sample/lorem/random"/>
+        android:gravity="center"
+        android:layout_margin="8dp"
+        android:orientation="vertical">
 
-</LinearLayout>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageView"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="3dp"
+            android:scaleType="centerCrop"
+            app:error="@{@drawable/baseline_broken_image_24}"
+            app:imgUri="@{award.img}"
+            app:placeholder="@{@drawable/bg_placeholder}"
+            app:shapeAppearanceOverlay="@style/circle_image"
+            app:strokeColor="@color/white"
+            app:strokeWidth="2dp"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:maxEms="5"
+            android:maxLines="3"
+            android:maxLength="30"
+            android:text="@{award.name}"
+            tools:text="@tools:sample/lorem/random" />
+
+    </LinearLayout>
+</layout>

@@ -1,17 +1,16 @@
 package com.example.achiliveapp.main.admin
 
 import android.net.Uri
-import androidx.core.net.toFile
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.achiliveapp.firebase.CategoriesSchemeDTO
-import com.example.achiliveapp.firebase.CategoryDataSource
-import com.example.achiliveapp.firebase.FirebaseImageCloud
+import com.example.achiliveapp.data.models.dto.CategoriesSchemeDTO
+import com.example.achiliveapp.data.api.firebase.CategoryDataSource
+import com.example.achiliveapp.data.api.firebase.FirebaseImageCloud
+import com.example.achiliveapp.share.states.ScreenUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.io.File
 
 class AddCategoryViewModel : ViewModel() {
 

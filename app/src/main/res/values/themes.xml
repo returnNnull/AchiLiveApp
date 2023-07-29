@@ -12,8 +12,6 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/black_bg</item>
         <!-- Customize your theme here. -->
-        <item name="android:windowTranslucentStatus">true</item>
-
         <item name="android:windowBackground">@color/black_bg</item>
         <item name="android:textColor">@color/gray</item>
     </style>

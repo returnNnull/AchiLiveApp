@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+        <variable
+            name="category"
+            type="com.example.achiliveapp.domain.models.CategoryWithRating" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="200dp"
@@ -19,11 +24,15 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="64dp"
             android:scaleType="centerCrop"
+            app:error="@{@drawable/baseline_broken_image_24}"
+            app:imgUri="@{category.img}"
+            app:placeholder="@{@drawable/bg_placeholder}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
+            tools:srcCompat="@tools:sample/avatars"
+            android:contentDescription="@string/categoryImage" />
 
 
         <View
@@ -53,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_bold"
-                android:text=""
+                android:text="@{category.name}"
                 android:textSize="24sp"
                 tools:text="Category" />
 
@@ -61,6 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat"
+                android:text="@{category.about}"
                 android:maxLines="3"
                 android:ellipsize="end"
                 android:textSize="12sp"
@@ -85,6 +95,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
+                android:maxLength="3"
+                android:text="@{String.valueOf(category.rating)}"
                 tools:text="4.8" />
 
             <ImageView
@@ -93,7 +105,8 @@
                 android:layout_height="8dp"
 
                 app:srcCompat="@drawable/baseline_star_24"
-                app:tint="@color/white" />
+                app:tint="@color/white"
+                android:contentDescription="@string/star" />
 
 
         </LinearLayout>

@@ -70,13 +70,14 @@
             android:id="@+id/motivationCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             app:_icon="@drawable/baseline_copyright_24"
             app:_text="Motivation text"
             app:_tittle="мотивация"
             app:layout_constraintEnd_toStartOf="@+id/statusCard"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/categoryCard"
-            tools:layout_editor_absoluteY="326dp" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
         <com.example.achiliveapp.share.views.InfoCard
             android:id="@+id/statusCard"

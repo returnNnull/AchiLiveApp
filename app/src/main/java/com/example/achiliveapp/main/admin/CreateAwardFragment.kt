@@ -6,9 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
@@ -17,11 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
 import com.example.achiliveapp.R
-import com.example.achiliveapp.databinding.AchiListItemBinding
 import com.example.achiliveapp.databinding.FragmentCreateAwardBinding
-import com.example.achiliveapp.main.achi.data.AwardScheme
-import com.example.achiliveapp.share.SpinnerItem
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.example.achiliveapp.share.states.ScreenUiState
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 

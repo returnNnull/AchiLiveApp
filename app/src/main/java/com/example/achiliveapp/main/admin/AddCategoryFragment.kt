@@ -1,17 +1,12 @@
 package com.example.achiliveapp.main.admin
 
-import android.net.Uri
 import android.os.Bundle
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -19,12 +14,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
 import com.example.achiliveapp.R
-import com.example.achiliveapp.auth.utils.getTextWithTrim
 import com.example.achiliveapp.databinding.FragmentAddCategoryBinding
-import com.example.achiliveapp.share.EditTextChangeListener
+import com.example.achiliveapp.share.states.ScreenUiState
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 
 

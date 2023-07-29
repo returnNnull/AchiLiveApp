@@ -5,10 +5,10 @@
 
     <data>
         <import type="android.view.View"/>
-        <import type="com.example.achiliveapp.main.achi.data.AwardScheme.Type"/>
+        <import type="com.example.achiliveapp.main.achi.data.AwardSchemeModel.Type"/>
         <variable
             name="award"
-            type="com.example.achiliveapp.main.achi.data.AwardScheme" />
+            type="com.example.achiliveapp.main.achi.data.AwardSchemeModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

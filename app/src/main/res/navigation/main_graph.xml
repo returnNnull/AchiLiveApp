@@ -14,7 +14,14 @@
         android:id="@+id/achievementListFragment"
         android:name="com.example.achiliveapp.main.achi.AchievementFragment"
         android:label="fragment_achievement_list"
-        tools:layout="@layout/fragment_achievement" />
+        tools:layout="@layout/fragment_achievement" >
+        <action
+            android:id="@+id/action_achievementListFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
+        <action
+            android:id="@+id/action_achievementListFragment_to_awardDetailsFragment"
+            app:destination="@id/awardDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.example.achiliveapp.main.SettingFragment"
@@ -56,5 +63,33 @@
             android:name="bottomNavShow"
             app:argType="boolean"
             android:defaultValue="false"/>
+    </fragment>
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.example.achiliveapp.main.achi.CategoryFragment"
+        android:label="fragment_category"
+        tools:layout="@layout/fragment_category" >
+        <action
+            android:id="@+id/action_categoryFragment_to_achievementListFragment"
+            app:destination="@id/achievementListFragment"
+            app:popUpTo="@id/achievementListFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="@string/categoryId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/awardDetailsFragment"
+        android:name="com.example.achiliveapp.AwardDetailsFragment"
+        android:label="fragment_award_details"
+        tools:layout="@layout/fragment_award_details" >
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_awardDetailsFragment_to_achievementListFragment"
+            app:destination="@id/achievementListFragment"
+            app:popUpTo="@id/achievementListFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

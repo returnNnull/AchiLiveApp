@@ -6,9 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.achiliveapp.data.api.firebase.*
+import com.example.achiliveapp.data.models.dto.AwardSchemeDTO
+import com.example.achiliveapp.data.models.dto.CategoriesSchemeDTO
+import com.example.achiliveapp.data.models.dto.Rating
 import com.example.achiliveapp.firebase.*
-import com.example.achiliveapp.main.achi.data.AwardScheme
 import com.example.achiliveapp.share.SpinnerItem
+import com.example.achiliveapp.share.states.ScreenUiState
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,6 +24,7 @@ class CreateAwardViewModel(private val id: String?) : ViewModel(), ViewModelProv
     private val imageCloud = FirebaseImageCloud()
     private val firebaseAwards = AwardSchemeDataSource()
     private val firebaseCategories = CategoryDataSource()
+    private val firebaseRating = RatingDataSource()
 
 
     private val _screenUiState = MutableStateFlow<ScreenUiState>(ScreenUiState.Started())
@@ -41,7 +46,8 @@ class CreateAwardViewModel(private val id: String?) : ViewModel(), ViewModelProv
                     it.img = resultImg.toString()
                     it.categoriesId = categoryId
                 }
-                firebaseAwards.insert(awardDto).getOrThrow()
+                val award = firebaseAwards.insert(awardDto).getOrThrow()
+                firebaseRating.insert(Rating(award.id, categoryId))
                 _screenUiState.value = ScreenUiState.Success()
             } catch (e: Exception) {
                 _screenUiState.value = ScreenUiState.Error(e)

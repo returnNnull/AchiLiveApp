@@ -3,10 +3,8 @@ package com.example.achiliveapp.share
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
-import androidx.databinding.BindingConversion
 import androidx.databinding.InverseBindingAdapter
 import com.example.achiliveapp.main.admin.CreateAwardViewModel
 import com.google.android.material.textfield.TextInputLayout
@@ -31,4 +29,9 @@ fun selectedItem(spinner: Spinner, list: List<SpinnerItem>){
 @BindingAdapter("android:visibility")
 fun authState(view: View, visibility: Boolean) {
     view.isVisible = visibility
+}
+
+@BindingAdapter("app:_tittle")
+fun tittleFieldBinding(card: InfoCard, value: String){
+    card.tittle = value
 }
