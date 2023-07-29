@@ -3,8 +3,10 @@ package com.example.achiliveapp.share
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
+import androidx.databinding.BindingConversion
 import androidx.databinding.InverseBindingAdapter
 import com.example.achiliveapp.main.admin.CreateAwardViewModel
 import com.google.android.material.textfield.TextInputLayout
