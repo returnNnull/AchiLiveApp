@@ -3,12 +3,9 @@ package com.example.achiliveapp.share
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
-import androidx.databinding.BindingConversion
-import androidx.databinding.InverseBindingAdapter
-import com.example.achiliveapp.main.admin.CreateAwardViewModel
+import com.example.achiliveapp.share.views.InfoCard
 import com.google.android.material.textfield.TextInputLayout
 
 
@@ -35,5 +32,5 @@ fun authState(view: View, visibility: Boolean) {
 
 @BindingAdapter("app:_tittle")
 fun tittleFieldBinding(card: InfoCard, value: String){
-    card.tittle = value
+    card.setTittle(value)
 }
