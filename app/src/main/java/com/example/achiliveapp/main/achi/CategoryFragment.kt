@@ -16,8 +16,10 @@ import com.example.achiliveapp.R
 import com.example.achiliveapp.databinding.FragmentCategoryBinding
 import com.example.achiliveapp.main.achi.adapters.AwardsListAdapterDelegate
 import com.example.achiliveapp.main.achi.adapters.DefaultRecyclerViewAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class CategoryFragment : Fragment() {
 
     private var binding: FragmentCategoryBinding? = null

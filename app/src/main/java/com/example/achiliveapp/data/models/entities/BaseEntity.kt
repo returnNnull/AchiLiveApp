@@ -4,9 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-abstract class BaseEntity<I> constructor(
-    open var id : I,
+abstract class BaseEntity constructor(
+    @PrimaryKey var id : String,
     var isSynchronized: Boolean = false
-){
-    constructor(id: I) : this(id, false)
-}
+)

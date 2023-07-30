@@ -1,51 +1,51 @@
 package com.example.achiliveapp.data.models.dto
 
-abstract class DTO<T>(
-    open var id: T,
+abstract class DTO(
+    var id: String,
 )
 
 
-data class ProfileDTO(
-    override var id: String = "",
+class ProfileDTO(
+    id: String = "",
     val name: String = "",
     val role: String = "USER",
     val img: String  = "",
     val motivation: String = "",
-) : DTO<String>(id)
+) : DTO(id)
 
-data class AwardSchemeDTO(
-    override var id: String = "",
+class AwardSchemeDTO(
+    id: String = "",
     val name: String = "",
     val about: String = "",
     var img: String = "",
     val maxValue: Int = 0,
     var categoriesId: String = "",
     val type: String = ""
-) : DTO<String>(id)
+) : DTO(id)
 
 
-data class CategoriesSchemeDTO(
-    override var id: String = "",
+class CategoriesSchemeDTO(
+    id: String = "",
     val name: String = "",
     val about: String = "",
     var img: String = ""
-) : DTO<String>(id)
+) : DTO(id)
 
 
-data class AwardProgressDTO (
-    override var id: String = "",
+class AwardProgressDTO (
+    id: String = "",
     var value: Double,
     var userId: String,
     var awardSchemeId: String,
     var categorySchemeId: String,
     val isBest: Boolean,
     val endDate: String?
-) : DTO<String>(id)
+) : DTO(id)
 
-data class RatingDTO(
-    override var id: String = "",
+class RatingDTO(
+    id: String = "",
     var awardSchemeId: String = "",
     var categorySchemeId: String = "",
     var count: Double = 0.0,
     var sum: Double = 0.0
-) : DTO<String>(id)
+) : DTO(id)

@@ -11,11 +11,11 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-abstract class FirebaseDataSource<T : DTO<String>>(
-    private val collectionName: String,
-    private val db: FirebaseFirestore = Firebase.firestore
+abstract class FirebaseDataSource<T : DTO>(
+
 ) : RemoteSource<T, String>() {
 
+    private val db: FirebaseFirestore = Firebase.firestore
     companion object {
         const val CATEGORIES_SCHEME_DATA = "categories_scheme"
         const val AWARD_SCHEME_DATA = "awards_scheme"
@@ -25,7 +25,7 @@ abstract class FirebaseDataSource<T : DTO<String>>(
 
     override suspend fun where(fieldName: String, value: Any) = withContext(ioDispatcher) {
         try {
-            val list = db.collection(collectionName).whereEqualTo(fieldName, value).get().await()
+            val list = db.collection(getTableName()).whereEqualTo(fieldName, value).get().await()
             Result.success(list.map { q -> parse(q)!! })
         } catch (e: Exception) {
             Result.failure(e)
@@ -35,7 +35,7 @@ abstract class FirebaseDataSource<T : DTO<String>>(
 
     override suspend fun getAll() = withContext(ioDispatcher) {
         try {
-            val list = db.collection(collectionName).get().await()
+            val list = db.collection(getTableName()).get().await()
             Result.success(list.map { q -> parse(q)!! })
         } catch (e: Exception) {
             Result.failure(e)
@@ -46,10 +46,10 @@ abstract class FirebaseDataSource<T : DTO<String>>(
         try {
             val doc: DocumentReference
             if (t.id.isEmpty()) {
-                doc = db.collection(collectionName).document()
+                doc = db.collection(getTableName()).document()
                 t.id = doc.id
             } else {
-                doc = db.collection(collectionName).document(t.id)
+                doc = db.collection(getTableName()).document(t.id)
             }
             doc.set(t).await()
             Result.success(t)
@@ -60,7 +60,7 @@ abstract class FirebaseDataSource<T : DTO<String>>(
 
     override suspend fun delete(t: T) = withContext(ioDispatcher) {
         try {
-            db.collection(collectionName).document(t.id).delete().await()
+            db.collection(getTableName()).document(t.id).delete().await()
             Result.success(t)
         } catch (e: Exception) {
             Result.failure(e)
@@ -70,7 +70,7 @@ abstract class FirebaseDataSource<T : DTO<String>>(
 
     override suspend fun update(t: T) = withContext(ioDispatcher) {
         try {
-            val doc = db.collection(collectionName).document(t.id)
+            val doc = db.collection(getTableName()).document(t.id)
             doc.set(t).await()
             Result.success(t)
         } catch (e: Exception) {
@@ -82,7 +82,7 @@ abstract class FirebaseDataSource<T : DTO<String>>(
 
     override suspend fun getById(id: String) = withContext(ioDispatcher) {
         try {
-            val task = db.collection(collectionName).document(id).get().await()
+            val task = db.collection(getTableName()).document(id).get().await()
             Result.success(parse(task)!!)
         } catch (e: Exception) {
             Result.failure(e)
@@ -93,5 +93,7 @@ abstract class FirebaseDataSource<T : DTO<String>>(
 
 
     abstract fun parse(v: DocumentSnapshot): T?
+
+    abstract fun getTableName(): String
 
 }

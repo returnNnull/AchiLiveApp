@@ -3,12 +3,17 @@ package com.example.achiliveapp.data.api.firebase
 import com.example.achiliveapp.data.models.dto.RatingDTO
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class RatingDataSource(private val collectionName: String = RATING_DATA) : FirebaseDataSource<RatingDTO>(collectionName) {
+class RatingFirebase : FirebaseDataSource<RatingDTO>() {
 
 
     override fun parse(v: DocumentSnapshot): RatingDTO? {
         return  v.toObject(RatingDTO::class.java)
+    }
+
+    override fun getTableName(): String {
+        return RATING_DATA
     }
 
     suspend fun updateRating(awardSchemeId: String, grade: Int) = withContext(ioDispatcher){

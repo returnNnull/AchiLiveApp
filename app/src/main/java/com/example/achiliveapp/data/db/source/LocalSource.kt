@@ -6,8 +6,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 
 
-abstract class LocalSource<E : BaseEntity<I>, I> constructor(protected val dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+abstract class LocalSource<E : BaseEntity, I> constructor() {
 
+    protected val dispatcher: CoroutineDispatcher = Dispatchers.IO
     abstract fun getAll(): Flow<List<E>>
     abstract suspend fun getById(id : I): E
     abstract suspend fun insert(e : E)

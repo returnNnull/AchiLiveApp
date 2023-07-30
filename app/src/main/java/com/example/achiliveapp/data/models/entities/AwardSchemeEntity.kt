@@ -6,15 +6,15 @@ import androidx.room.PrimaryKey
 
 
 @Entity
-data class AwardSchemeEntity constructor(
-    @PrimaryKey override var id: String,
+class AwardSchemeEntity constructor(
+    id: String,
     val name: String = "",
     val about: String = "",
     var img: Uri = Uri.EMPTY,
     val maxValue: Int = 0,
     var categoriesId: String = "",
     val type: AwardType = AwardType.EMPTY,
-) : BaseEntity<String>(id)
+) : BaseEntity(id)
 
 enum class AwardType(val value: Int) {
     EMPTY(-1),

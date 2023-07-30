@@ -2,10 +2,14 @@ package com.example.achiliveapp.data.db.source
 
 import com.example.achiliveapp.data.db.dao.ICategoriesSchemeDAO
 import com.example.achiliveapp.data.models.entities.CategorySchemeEntity
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.inject.Singleton
 
+
+@Singleton
 class CategoriesSchemeLocalSource @Inject constructor(
     private val dao: ICategoriesSchemeDAO
 

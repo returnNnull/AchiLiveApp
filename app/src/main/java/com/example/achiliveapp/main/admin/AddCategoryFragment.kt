@@ -8,6 +8,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -17,13 +18,15 @@ import com.example.achiliveapp.R
 import com.example.achiliveapp.databinding.FragmentAddCategoryBinding
 import com.example.achiliveapp.share.states.ScreenUiState
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class AddCategoryFragment : Fragment() {
 
 
-    private lateinit var viewModel: AddCategoryViewModel
+    private val viewModel: AddCategoryViewModel by viewModels()
     private var binding: FragmentAddCategoryBinding? = null
 
     companion object{
@@ -41,7 +44,6 @@ class AddCategoryFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel = ViewModelProvider(this)[AddCategoryViewModel::class.java]
         collectScreenStates(view)
         collectCategory()
 

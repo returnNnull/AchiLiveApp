@@ -1,11 +1,12 @@
-package com.example.achiliveapp.data.repositories.utils.mapper
+package com.example.achiliveapp.data.models.mapper
 
 import android.net.Uri
 import com.example.achiliveapp.data.models.dto.AwardSchemeDTO
 import com.example.achiliveapp.data.models.entities.AwardSchemeEntity
 import com.example.achiliveapp.data.models.entities.AwardType
+import javax.inject.Inject
 
-class AwardsSchemeMapper : Mapper<AwardSchemeEntity, AwardSchemeDTO, String>() {
+class AwardsSchemeMapper @Inject constructor() : Mapper<AwardSchemeEntity, AwardSchemeDTO, String>() {
 
     override fun toDto(e: AwardSchemeEntity): AwardSchemeDTO {
         return AwardSchemeDTO(

@@ -16,7 +16,8 @@ import com.example.achiliveapp.data.models.entities.RatingEntity
 
 @Database(
     entities = [AwardSchemeEntity::class, CategorySchemeEntity::class, RatingEntity::class],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 @TypeConverters(AwardTypeConverter::class, ImageUriConverter::class)
 abstract class RoomConnection : RoomDatabase() {

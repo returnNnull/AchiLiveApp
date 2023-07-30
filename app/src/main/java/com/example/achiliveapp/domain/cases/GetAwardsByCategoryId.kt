@@ -9,9 +9,10 @@ import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class GetAwardsByCategoryId @Inject constructor(
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default,
-    private val awardsRepository: ModelsRepository<AwardSchemeEntity, AwardSchemeDTO, String>
+    private var awardsRepository: ModelsRepository<AwardSchemeEntity, AwardSchemeDTO, String>
 ) {
+
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 
     suspend operator fun invoke(categoryId: String, refresh: Boolean = false) = withContext(dispatcher){
         awardsRepository.getAll(refresh)

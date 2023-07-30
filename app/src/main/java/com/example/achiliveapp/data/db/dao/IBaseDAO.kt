@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy.Companion.REPLACE
 import com.example.achiliveapp.data.models.entities.BaseEntity
 
 
-interface IBaseDAO<E : BaseEntity<String>> {
+interface IBaseDAO<E : BaseEntity> {
 
     @Insert(onConflict = REPLACE)
     suspend fun insert(vararg e : E)

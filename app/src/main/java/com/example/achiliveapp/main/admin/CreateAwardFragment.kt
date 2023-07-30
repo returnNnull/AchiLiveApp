@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -17,8 +18,10 @@ import com.example.achiliveapp.R
 import com.example.achiliveapp.databinding.FragmentCreateAwardBinding
 import com.example.achiliveapp.share.states.ScreenUiState
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class CreateAwardFragment : Fragment() {
 
     companion object {
@@ -26,7 +29,7 @@ class CreateAwardFragment : Fragment() {
         const val ID = "ID"
     }
 
-    private lateinit var viewModel: CreateAwardViewModel
+    private val viewModel: CreateAwardViewModel by viewModels()
     private var binding: FragmentCreateAwardBinding? = null
 
     override fun onCreateView(
@@ -40,8 +43,10 @@ class CreateAwardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val id = arguments?.getString(ID, null)
-        viewModel = ViewModelProvider(this, CreateAwardViewModel(id))[CreateAwardViewModel::class.java]
+        arguments?.getString(ID, null).also {
+            viewModel.init(it)
+        }
+
         binding?.let {
             it.lifecycleOwner = this
             it.viewModel = viewModel

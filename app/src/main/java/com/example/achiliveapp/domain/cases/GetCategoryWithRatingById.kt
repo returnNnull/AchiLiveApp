@@ -11,12 +11,15 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+
+
 class GetCategoryWithRatingById @Inject constructor(
-    private val categoriesRepository: ModelsRepository<CategorySchemeEntity, CategoriesSchemeDTO, String>,
-    private val getRatingForCategory: GetRatingForCategory,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
+   private val categoriesRepository: ModelsRepository<CategorySchemeEntity, CategoriesSchemeDTO, String>,
+   private val getRatingForCategory: GetRatingForCategory,
+
 ) {
 
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
     suspend operator fun invoke(id: String, refresh: Boolean = false) = withContext(dispatcher) {
         val categoryTask = async {
             categoriesRepository.getAll(refresh)

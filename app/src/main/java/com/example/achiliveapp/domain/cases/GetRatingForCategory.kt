@@ -10,22 +10,29 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+
 class GetRatingForCategory @Inject constructor(
     private val rating: ModelsRepository<RatingEntity, RatingDTO, String>,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 
-    suspend operator fun invoke(id: String, refresh: Boolean = true) = withContext(dispatcher){
+    suspend operator fun invoke(id: String, refresh: Boolean = true) = withContext(dispatcher) {
         val ratingTask = async { rating.getAll(refresh) }
         val ratingMap = ratingTask.await()
             .first()
             .groupBy {
                 it.categorySchemeId
             }
-        val ratingList = ratingMap[id]!!
-        val count = async {  ratingList.sumOf { it.count }}
-        val sum = async {  ratingList.sumOf { it.sum }}
-        sum.await() / count.await()
+        val ratingList = ratingMap[id]
+        var rating = 5.0
+        if (ratingList != null) {
+            val count = async { ratingList.sumOf { it.count } }
+            val sum = async { ratingList.sumOf { it.sum } }
+            if (count.await() != 0.0) {
+                rating = sum.await() / count.await()
+            }
+        }
+        rating
     }
 
 }

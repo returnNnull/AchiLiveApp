@@ -1,23 +1,23 @@
-package com.example.achiliveapp.data.db.hilt
+package com.example.achiliveapp.data.db.di
 
 import android.content.Context
 import androidx.room.Room
 import com.example.achiliveapp.data.db.RoomConnection
 import com.example.achiliveapp.data.db.dao.IAwardSchemeDAO
+import com.example.achiliveapp.data.db.dao.ICategoriesSchemeDAO
+import com.example.achiliveapp.data.db.dao.IRatingDAO
 import com.example.achiliveapp.data.db.utills.AwardTypeConverter
 import com.example.achiliveapp.data.db.utills.ImageUriConverter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class DaoHiltModules {
-
+object DaoHiltModules {
 
     @Provides
     @Singleton
@@ -30,13 +30,15 @@ abstract class DaoHiltModules {
 
     @Provides
     @Singleton
-    fun provideAwardsSchemeDao(roomConnection: RoomConnection) = roomConnection.awardsSchemeDao()
+    fun provideAwardsSchemeDao(roomConnection: RoomConnection) : IAwardSchemeDAO = roomConnection.awardsSchemeDao()
 
     @Provides
     @Singleton
-    fun provideCategorySchemeDao(roomConnection: RoomConnection) = roomConnection.categoriesSchemeDao()
+    fun provideCategorySchemeDao(roomConnection: RoomConnection) : ICategoriesSchemeDAO =
+        roomConnection.categoriesSchemeDao()
 
     @Provides
     @Singleton
-    fun provideRatingDao(roomConnection: RoomConnection) = roomConnection.ratingDao()
+    fun provideRatingDao(roomConnection: RoomConnection) : IRatingDAO = roomConnection.ratingDao()
+
 }

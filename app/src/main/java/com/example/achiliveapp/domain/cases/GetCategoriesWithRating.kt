@@ -12,22 +12,27 @@ import javax.inject.Inject
 class GetCategoriesWithRating @Inject constructor(
     private val categories: ModelsRepository<CategorySchemeEntity, CategoriesSchemeDTO, String>,
     private val getRatingForCategory: GetRatingForCategory,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
-) {
 
+    ) {
+
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
     suspend operator fun invoke(refresh: Boolean = true) = withContext(dispatcher) {
-        categories.getAll(refresh).map {
-            it.map { e ->
-                async {
-                    CategoryWithRating(
-                        e.id,
-                        e.name,
-                        e.about,
-                        e.img,
-                        getRatingForCategory(e.id)
-                    )
+        categories.getAll(refresh)
+            .map {
+                it.map { e ->
+                        CategoryWithRating(
+                            e.id,
+                            e.name,
+                            e.about,
+                            e.img,
+                            getRatingForCategory(e.id)
+                        )
+
                 }
-            }.awaitAll()
-        }
+            }
+    }
+
+    suspend fun refresh() = withContext(dispatcher){
+        categories.refresh()
     }
 }

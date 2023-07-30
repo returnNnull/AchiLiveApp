@@ -1,6 +1,5 @@
 package com.example.achiliveapp.main.admin
 
-import android.content.res.Resources.NotFoundException
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,22 +8,30 @@ import androidx.lifecycle.viewModelScope
 import com.example.achiliveapp.data.api.firebase.*
 import com.example.achiliveapp.data.models.dto.AwardSchemeDTO
 import com.example.achiliveapp.data.models.dto.CategoriesSchemeDTO
-import com.example.achiliveapp.data.models.dto.Rating
-import com.example.achiliveapp.firebase.*
+import com.example.achiliveapp.data.models.dto.RatingDTO
+import com.example.achiliveapp.data.models.entities.AwardSchemeEntity
+import com.example.achiliveapp.data.models.entities.AwardType
+import com.example.achiliveapp.data.models.entities.CategorySchemeEntity
+import com.example.achiliveapp.data.models.entities.RatingEntity
+import com.example.achiliveapp.data.repositories.ModelsRepository
 import com.example.achiliveapp.share.SpinnerItem
 import com.example.achiliveapp.share.states.ScreenUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class CreateAwardViewModel(private val id: String?) : ViewModel(), ViewModelProvider.Factory {
-
-    private val imageCloud = FirebaseImageCloud()
-    private val firebaseAwards = AwardSchemeDataSource()
-    private val firebaseCategories = CategoryDataSource()
-    private val firebaseRating = RatingDataSource()
+@HiltViewModel
+class CreateAwardViewModel @Inject constructor(
+    private val imageCloud: FirebaseImageCloud,
+    private  val awardsRepository: ModelsRepository<AwardSchemeEntity, AwardSchemeDTO, String>,
+    private val categoryRepository: ModelsRepository<CategorySchemeEntity, CategoriesSchemeDTO, String>,
+    private val ratingRepository: ModelsRepository<RatingEntity, RatingDTO, String>
+) : ViewModel(), ViewModelProvider.Factory {
 
 
     private val _screenUiState = MutableStateFlow<ScreenUiState>(ScreenUiState.Started())
@@ -42,12 +49,12 @@ class CreateAwardViewModel(private val id: String?) : ViewModel(), ViewModelProv
                 val uri = awardUiState.img.value!!
                 val resultImg = imageCloud.save(uri, FirebaseImageCloud.Folder.AWARDS).getOrThrow()
                 val categoryId = spinnerCategoryUiState.getSelectedItem().id
-                val awardDto = awardUiState.toDTO().also {
-                    it.img = resultImg.toString()
+                val awardDto = awardUiState.toEntity().also {
+                    it.img = resultImg
                     it.categoriesId = categoryId
                 }
-                val award = firebaseAwards.insert(awardDto).getOrThrow()
-                firebaseRating.insert(Rating(award.id, categoryId))
+                val award = awardsRepository.insert(awardDto)
+                ratingRepository.insert(RatingEntity(awardSchemeId = award.id, categorySchemeId = categoryId))
                 _screenUiState.value = ScreenUiState.Success()
             } catch (e: Exception) {
                 _screenUiState.value = ScreenUiState.Error(e)
@@ -61,14 +68,14 @@ class CreateAwardViewModel(private val id: String?) : ViewModel(), ViewModelProv
 
 
 
-    private fun init() {
+    fun init(id: String? = null) {
         viewModelScope.launch {
             try {
                 _screenUiState.value = ScreenUiState.Loading()
                 val spinnerTask = async {  loadSpinnerListAsync() }
+                val spinnerCategoriesList = spinnerTask.await()
                 if (id != null) {
-                    val award = firebaseAwards.getById(id).getOrThrow()
-                    val spinnerCategoriesList = spinnerTask.await()
+                    val award = awardsRepository.getById(id)
                     val selectedItem = spinnerCategoriesList.first {
                         it.id == award.categoriesId
                     }
@@ -83,7 +90,7 @@ class CreateAwardViewModel(private val id: String?) : ViewModel(), ViewModelProv
     }
 
     private suspend fun loadSpinnerListAsync(): MutableList<SpinnerItem> {
-            val categoriesList = firebaseCategories.getAll().getOrThrow()
+            val categoriesList = categoryRepository.getAll(false).first()
             val spinnerList: MutableList<SpinnerItem> = toSpinnerItems(categoriesList)
             updateSpinnerUiStates(spinnerList, spinnerList[0])
             return spinnerList
@@ -97,7 +104,7 @@ class CreateAwardViewModel(private val id: String?) : ViewModel(), ViewModelProv
         spinnerCategoryUiState.selectedPosition.value = selectedItem.position
     }
 
-    private fun toSpinnerItems(categoriesList: List<CategoriesSchemeDTO>): MutableList<SpinnerItem> {
+    private fun toSpinnerItems(categoriesList: List<CategorySchemeEntity>): MutableList<SpinnerItem> {
         val spinnerList: MutableList<SpinnerItem> = mutableListOf()
         for (i in categoriesList.indices) {
             val item = categoriesList[i]
@@ -106,39 +113,27 @@ class CreateAwardViewModel(private val id: String?) : ViewModel(), ViewModelProv
         return spinnerList
     }
 
-    private fun updateAwardUiState(award: AwardSchemeDTO) {
+    private fun updateAwardUiState(award: AwardSchemeEntity) {
         awardUiState.update(
             award.id,
             award.name,
             award.about,
-            Uri.parse(award.img),
+            award.img,
             award.maxValue,
-            award.type
+            award.type.value
         )
     }
 
 
-    private fun AwardUiState.toDTO(): AwardSchemeDTO {
-        val award = AwardSchemeDTO(
+    private fun AwardUiState.toEntity(): AwardSchemeEntity {
+        return AwardSchemeEntity(
+            id = id.value!!,
             name = name.value!!,
             about = about.value!!,
-            img = img.value!!.toString(),
+            img = img.value!!,
             maxValue = maxValue.value!!,
-            type = type.value!!
+            type = AwardType.getByInt(type.value!!)
         )
-        award.id = id.value!!
-        return award
-    }
-
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(CreateAwardViewModel::class.java)) {
-            val viewModel = CreateAwardViewModel(id)
-            viewModel.init()
-            return viewModel as T
-        }
-        throw NotFoundException("ViewModel ${this.javaClass.name} not found!")
     }
 
 

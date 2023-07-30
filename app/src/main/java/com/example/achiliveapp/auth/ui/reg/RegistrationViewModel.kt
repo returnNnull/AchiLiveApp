@@ -10,7 +10,7 @@ import com.example.achiliveapp.share.EditableTextViewState
 import com.example.achiliveapp.auth.utils.PasswordEditTextException
 import com.example.achiliveapp.auth.utils.TextValidatorBuilder
 import com.example.achiliveapp.data.models.dto.ProfileDTO
-import com.example.achiliveapp.data.api.firebase.ProfileDataSource
+import com.example.achiliveapp.data.api.firebase.ProfileFirebase
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +21,7 @@ import kotlinx.coroutines.tasks.await
 class RegistrationViewModel : ViewModel() {
 
     private val auth = Firebase.auth
-    private val profileDataSource = ProfileDataSource()
+    private val __profileFirebase = ProfileFirebase()
 
     private val _authState: MutableStateFlow<AuthUiState> = MutableStateFlow(AuthUiState.Empty())
     val authState = _authState.asStateFlow()
@@ -57,7 +57,7 @@ class RegistrationViewModel : ViewModel() {
                 else{
                     val profileDTO = ProfileDTO()
                     profileDTO.id = result.user!!.uid
-                    profileDataSource.insert(profileDTO).getOrThrow()
+                    __profileFirebase.insert(profileDTO).getOrThrow()
                 }
             } catch (e: Exception) {
                 _authState.value = AuthUiState.error(e)

@@ -7,8 +7,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.io.File
+import javax.inject.Inject
 
-class FirebaseImageCloud {
+class FirebaseImageCloud @Inject constructor() {
 
     private val server = Firebase.storage
     suspend fun save(uri: Uri, folder: Folder): Result<Uri> = withContext(Dispatchers.IO) {

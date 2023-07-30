@@ -2,10 +2,6 @@ package com.example.achiliveapp.main.achi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.achiliveapp.data.api.firebase.AwardSchemeDataSource
-import com.example.achiliveapp.data.api.firebase.CategoryDataSource
-import com.example.achiliveapp.data.api.firebase.RatingDataSource
-import com.example.achiliveapp.data.models.entities.AwardSchemeEntity
 import com.example.achiliveapp.domain.cases.GetAwardsForPreview
 import com.example.achiliveapp.domain.cases.GetCategoriesWithRating
 import com.example.achiliveapp.domain.models.AwardsSchemeForPreview
@@ -15,7 +11,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,19 +30,18 @@ class AchievementViewModel @Inject constructor(
 
 
     init {
-        viewModelScope.launch {
-            launch{
-                initCategoryList()
-            }
-            launch(Dispatchers.Default) {
-                initAwardsList()
-            }
+        viewModelScope.launch{
+            launch {  initCategoryList()}
+            launch {  initAwardsList()}
         }
     }
 
+
+
     private suspend fun initCategoryList() = coroutineScope {
         try {
-            getCategoriesWithRating().collect{
+
+            getCategoriesWithRating(refresh = true).collect {
                 _categoriesListState.value = ListUiState.Success(it)
             }
 
@@ -59,18 +53,18 @@ class AchievementViewModel @Inject constructor(
     private suspend fun initAwardsList() = coroutineScope {
 
         try {
-            getAwardsForPreview(true).collect{
+            getAwardsForPreview().collect {
                 _awardsListState.value = ListUiState.Success(it)
             }
+            getAwardsForPreview.refresh()
 
         } catch (e: Exception) {
             _awardsListState.value = ListUiState.Error(e)
         }
     }
 
-
-
-
-
+    override fun onCleared() {
+        super.onCleared()
+    }
 
 }
