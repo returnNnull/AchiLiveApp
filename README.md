@@ -1,13 +1,14 @@
 # AchiLiveApp
 Приложение Ачивок.
 
-Приложение разработано с использованием чистой архитектуры MVVM, MVI. 
-Три основных слоя data, domain, main.
+Приложение разработано с использованием чистой архитектуры MVVM, MVI. Паттернов репозитория, first local
+Три основных слоя data, domain, main (view).
 
 Используемые библиотеки: 
 - Navigation
 - Hilt
 - Room
+- Viewv binding, DataBinding, создание кастомных привязок
 - Picasso
 - Firebase
 - Корутины и потоки Flow
